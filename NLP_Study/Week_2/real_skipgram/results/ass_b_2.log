@@ -1,0 +1,18 @@
+=== Sanity check for sigmoid ===
+Tests for sigmoid passed!
+==== Gradient check for naiveSoftmaxLossAndGradient ====
+Gradient check passed!. Read the docstring of the `gradcheck_naive` method in utils.gradcheck.py to understand what the gradient check does.
+Gradient check passed!. Read the docstring of the `gradcheck_naive` method in utils.gradcheck.py to understand what the gradient check does.
+==== Gradient check for negSamplingLossAndGradient ====
+Gradient check passed!. Read the docstring of the `gradcheck_naive` method in utils.gradcheck.py to understand what the gradient check does.
+Gradient check passed!. Read the docstring of the `gradcheck_naive` method in utils.gradcheck.py to understand what the gradient check does.
+==== Gradient check for skip-gram with naiveSoftmaxLossAndGradient ====
+Gradient check passed!. Read the docstring of the `gradcheck_naive` method in utils.gradcheck.py to understand what the gradient check does.
+======Skip-Gram with naiveSoftmaxLossAndGradient Test Cases======
+The first test passed!
+The second test passed!
+The third test passed!
+All 3 tests passed!
+==== Gradient check for skip-gram with negSamplingLossAndGradient ====
+Gradient check passed!. Read the docstring of the `gradcheck_naive` method in utils.gradcheck.py to understand what the gradient check does.
+======Skip-Gram with negSamplingLossAndGradient======

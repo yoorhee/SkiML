@@ -226,8 +226,8 @@ def test_sigmoid():
 def getDummyObjects():
     """ Helper method for naiveSoftmaxLossAndGradient and negSamplingLossAndGradient tests """
 
-    def dummySampleTokenIdx():
-        return random.randint(0, 4)
+    def dummySampleTokenIdx(outsideWordIdx, K):
+        return [random.randint(0, 4) for _ in range(K)]
 
     def getRandomContext(C):
         tokens = ["a", "b", "c", "d", "e"]
