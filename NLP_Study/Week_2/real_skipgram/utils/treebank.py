@@ -52,8 +52,6 @@ class RTE_dataset:
         self._tokenfreq = tokenfreq
         self._wordcount = wordcount
         self._revtokens = revtokens
-        assert len(self._tokens) == len(self._revtokens), "[BUG] token dict size mismatch!"
-
         return self._tokens
     
     def sentences(self):
@@ -141,33 +139,30 @@ class RTE_dataset:
         """
         Method to sample a token index based on reweighted token frequencies
         """
+        
         if not (hasattr(self, "_samplingFreq") and self._samplingFreq is not None):
             
             nTokens = len(self.tokens()) # initialize self._tokenfreq, self._tokens, self._revtokens and get num tokens
             self._samplingFreq = np.zeros((nTokens,)) # initialize sampling frequency
 
-            for i, w in enumerate(self._revtokens):
-                freq = self._tokenfreq.get(w, 0.0)
-                self._samplingFreq[i] = freq ** 0.75
-            #i = 0
-            #while i < nTokens: # 수정함
-            #    w = self._revtokens[i]
-            #    if w in self._tokenfreq: # if w in token frequency dict
-            #        freq = 1.0 * self._tokenfreq[w] 
-            #        ## ToDo: Reweigh the frequency by taking 0.75th power of frequncy. (1 line)
-            #        #######Your Code#######
-            #        freq = freq ** 0.75
-            #        #######################
-            #    else: # if w is not in token frequency dict
-            #        freq = 0.0
-            #    self._samplingFreq[i] = freq
-            #    i += 1
+            i = 0
+            for w in range(nTokens):
+                w = self._revtokens[i]
+                if w in self._tokenfreq: # if w in token frequency dict
+                    freq = 1.0 * self._tokenfreq[w] 
+                    ## ToDo: Reweigh the frequency by taking 0.75th power of frequncy. (1 line)
+                    #######Your Code#######
+                    ##
+                else: # if w is not in token frequency dict
+                    freq = 0.0
+                self._samplingFreq[i] = freq
+                i += 1
 
             # convert frequency to probability by dividing by the total frequency
             self._samplingFreq /= np.sum(self._samplingFreq)
         
         tmpSamplingFreq = np.copy(self._samplingFreq)
-        # make the outsideWordIdx`s sampling frequency zero
+        # make the outsideWordIdx's sampling frequency zero
         tmpSamplingFreq[outsideWordIdx] = 0.0
         # convert modified tmpSamplingFreq back to probability by dividing by the sum (probability must sum to 1.)
         tmpSamplingFreq /= tmpSamplingFreq.sum()
@@ -175,14 +170,5 @@ class RTE_dataset:
         ## ToDo: Sample K indices according to tmpSamplingFreq (1~2lines) (hint: you can use np.random.choice)
         idx = None
         #######Your Code#######
-        idx = np.random.choice(len(tmpSamplingFreq), size=K, replace=True, p=tmpSamplingFreq)
-        #######################
-        print("📏 tmpSamplingFreq.shape =", tmpSamplingFreq.shape)
-        print("📏 self._samplingFreq.shape =", self._samplingFreq.shape)
-        print("📏 outsidewordidx =", outsideWordIdx)
-        import inspect
-        print("🧠 sampleTokenIdx location:", inspect.getsourcefile(self.sampleTokenIdx))
-        #assert len(self._samplingFreq) == outsideVectors.shape[0], \
-        #    f"[BUG] samplingFreq length = {len(self._samplingFreq)} vs outsideVectors.shape[0] = {outsideVectors.shape[0]}"
-        assert np.max(idx) < len(tmpSamplingFreq), f"[BUG] max index = {np.max(idx)} >= {len(tmpSamplingFreq)}"
+        ##
         return idx

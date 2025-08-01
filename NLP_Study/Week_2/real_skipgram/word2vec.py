@@ -64,16 +64,6 @@ def naiveSoftmaxLossAndGradient(
     ### Please use the provided softmax function (imported earlier in this file)
     ### This numerically stable implementation helps you avoid issues pertaining
     ### to integer overflow. 
-    y_hat = softmax(np.dot(outsideVectors, centerWordVec)) #y_hat.shape = (V, )
-    y = np.zeros(y_hat.shape)
-    y[outsideWordIdx] = 1  # One-hot encoding for the outside word
-
-    loss = -np.log(y_hat[outsideWordIdx])
-
-    gradCenterVec = np.dot(outsideVectors.T, (y_hat - y))
-
-    gradOutsideVecs = np.zeros(outsideVectors.shape)
-    gradOutsideVecs += np.outer((y_hat - y), centerWordVec)
 
     ### END YOUR CODE
 
@@ -90,7 +80,6 @@ def getNegativeSamples(outsideWordIdx, dataset, K):
     #         newidx = dataset.sampleTokenIdx()
     #     negSampleWordIndices[k] = newidx
     negSampleWordIndices = dataset.sampleTokenIdx(outsideWordIdx, K)
-    # print("✅ getNegativeSamples called with outsideWordIdx =", outsideWordIdx)
     return negSampleWordIndices
 
 
@@ -120,24 +109,10 @@ def negSamplingLossAndGradient(
     # wish to match the autograder and receive points!
     negSampleWordIndices = getNegativeSamples(outsideWordIdx, dataset, K)
     indices = [outsideWordIdx] + negSampleWordIndices
-    # assert np.max(indices) < outsideVectors.shape[0], f"Index {np.max(indices)} out of bounds!" #수정함
-    ### YOUR CODE HERE (~10 Lines) ###
-    print("🧠 sampleTokenIdx in negSampling called from:", dataset.sampleTokenIdx.__code__)
-    print("📍 indices =", indices)
-    print("📍 max index =", np.max(indices))
-    print("📍 outsideVectors.shape =", outsideVectors.shape)
-    base = np.dot(outsideVectors[indices], centerWordVec)  # shape (K+1, )
+    ### YOUR CODE HERE (~10 Lines)
 
-    loss = -np.log(sigmoid(base[0])) - np.sum(np.log(sigmoid(-base[1:])))
 
-    y_hat = sigmoid(base)  # shape (K+1, )
-    y_hat[0] = y_hat[0] -1 
 
-    gradCenterVec = np.dot(y_hat, outsideVectors[indices])  # shape (D, )
-
-    gradOutsideVecs = np.zeros(outsideVectors.shape)
-    for i in range(len(indices)):
-        gradOutsideVecs[indices[i]] += y_hat[i] * centerWordVec
     ### END YOUR CODE
 
     return loss, gradCenterVec, gradOutsideVecs
@@ -216,9 +191,6 @@ def word2vec_sgd_wrapper(word2vecModel, word2Ind, wordVectors, dataset,
         loss += c / batchsize
         grad[:int(N/2), :] += gin / batchsize
         grad[int(N/2):, :] += gout / batchsize
-    centerWord, context = dataset.getRandomContext(windowSize1)
-    for w in [centerWord] + context:
-        assert w in word2Ind, f"[BUG] word '{w}' not in word2Ind! corrupted dataset?"
 
     return loss, grad
 
@@ -230,27 +202,27 @@ def test_sigmoid():
     assert np.allclose(sigmoid(np.array([1,2,3])), np.array([0.73105858, 0.88079708, 0.95257413]))
     print("Tests for sigmoid passed!")
 
-#def getDummyObjects():
-   # """ Helper method for naiveSoftmaxLossAndGradient and negSamplingLossAndGradient tests """
+def getDummyObjects():
+    """ Helper method for naiveSoftmaxLossAndGradient and negSamplingLossAndGradient tests """
 
-    #def dummySampleTokenIdx(outsideWordIdx, K):
-    #    return [random.randint(0, 4) for _ in range(K)]
+    def dummySampleTokenIdx():
+        return random.randint(0, 4)
 
-    #def getRandomContext(C):
-    #    tokens = ["a", "b", "c", "d", "e"]
-    #    return tokens[random.randint(0,4)], \
-    #        [tokens[random.randint(0,4)] for i in range(2*C)]
+    def getRandomContext(C):
+        tokens = ["a", "b", "c", "d", "e"]
+        return tokens[random.randint(0,4)], \
+            [tokens[random.randint(0,4)] for i in range(2*C)]
 
-    #dataset = type('dummy', (), {})()
-    #dataset.sampleTokenIdx = dummySampleTokenIdx
-    #dataset.getRandomContext = getRandomContext
+    dataset = type('dummy', (), {})()
+    dataset.sampleTokenIdx = dummySampleTokenIdx
+    dataset.getRandomContext = getRandomContext
 
-    #random.seed(31415)
-    #np.random.seed(9265)
-    #dummy_vectors = normalizeRows(np.random.randn(10,3))
-    #dummy_tokens = dict([("a",0), ("b",1), ("c",2),("d",3),("e",4)])
+    random.seed(31415)
+    np.random.seed(9265)
+    dummy_vectors = normalizeRows(np.random.randn(10,3))
+    dummy_tokens = dict([("a",0), ("b",1), ("c",2),("d",3),("e",4)])
 
-    #return dataset, dummy_vectors, dummy_tokens
+    return dataset, dummy_vectors, dummy_tokens
 
 def test_naiveSoftmaxLossAndGradient():
     """ Test naiveSoftmaxLossAndGradient """

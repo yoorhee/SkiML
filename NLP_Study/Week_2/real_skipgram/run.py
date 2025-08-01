@@ -19,13 +19,8 @@ assert sys.version_info[1] >= 5
 # Reset the random seed to make sure that everyone gets the same results
 random.seed(314)
 dataset = RTE_dataset()
-print("🔍 sampleTokenIdx function in use:", dataset.sampleTokenIdx.__name__)
 tokens = dataset.tokens()
 nWords = len(tokens)
-
-
-print("Vocabulary size:", nWords)
-print("len(dataset._revtokens):", len(dataset._revtokens))
 # print(type(dataset._tokenfreq))
 # sorted_d = sorted(dataset._tokenfreq.items(), key=operator.itemgetter(1), reverse=True)[:1000]
 # print('Dictionary in descending order by value : ',sorted_d)
@@ -44,15 +39,6 @@ wordVectors = np.concatenate(
     ((np.random.rand(nWords, dimVectors) - 0.5) /
        dimVectors, np.zeros((nWords, dimVectors))),
     axis=0)
-assert wordVectors.shape[0] == 2 * nWords, \
-    f"wordVectors shape mismatch: {wordVectors.shape} != 2 * {nWords}"
-print("Vocabulary size:", nWords)
-print("len(dataset._revtokens):", len(dataset._revtokens))
-print("outsideVectors.shape:", wordVectors[int(len(tokens)):].shape)
-print(wordVectors.shape)
-#assert wordVectors[int(nWords/2):].shape[0] == len(dataset._revtokens), \
-    #f"[ERROR] mismatch: outsideVectors={wordVectors[int(nWords/2):].shape[0]} vs revtokens={len(dataset._revtokens)}"
-
 wordVectors = sgd(
     lambda vec: word2vec_sgd_wrapper(skipgram, tokens, vec, dataset, C,
         negSamplingLossAndGradient),
