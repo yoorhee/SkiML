@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "run.py", line 45, in <module>
+    f"[ERROR] mismatch: outsideVectors={wordVectors[int(nWords/2):].shape[0]} vs revtokens={len(dataset._revtokens)}"
+AssertionError: [ERROR] mismatch: outsideVectors=36644 vs revtokens=24429
+srun: error: n01: task 0: Exited with exit code 1

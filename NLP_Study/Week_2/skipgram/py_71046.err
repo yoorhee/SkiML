@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "run.py", line 45, in <module>
+    wordVectors, 0.3, 20010, None, True, PRINT_EVERY=10)
+  File "/data3/yoorheekim/NLP_Study/Week_2/skipgram/sgd.py", line 89, in sgd
+    loss=f(x)[0]
+  File "run.py", line 44, in <lambda>
+    negSamplingLossAndGradient),
+  File "/data3/yoorheekim/NLP_Study/Week_2/skipgram/word2vec.py", line 209, in word2vec_sgd_wrapper
+    outsideVectors, dataset, word2vecLossAndGradient
+  File "/data3/yoorheekim/NLP_Study/Week_2/skipgram/word2vec.py", line 182, in skipgram
+    , word2Ind[word], outsideVectors, dataset)
+  File "/data3/yoorheekim/NLP_Study/Week_2/skipgram/word2vec.py", line 121, in negSamplingLossAndGradient
+    negSampleVectors = outsideVectors[indices]  # Get the vectors for the outside word and negative samples
+IndexError: index 26670 is out of bounds for axis 0 with size 24429
+srun: error: n01: task 0: Exited with exit code 1

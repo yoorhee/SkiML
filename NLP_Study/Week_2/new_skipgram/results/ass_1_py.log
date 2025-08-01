@@ -1,0 +1,15 @@
+🔍 sampleTokenIdx function in use: sampleTokenIdx
+Vocabulary size: 24429
+len(dataset._revtokens): 24429
+Vocabulary size: 24429
+len(dataset._revtokens): 24429
+outsideVectors.shape: (24429, 10)
+(48858, 10)
+📏 tmpSamplingFreq.shape = (24429,)
+📏 self._samplingFreq.shape = (24429,)
+📏 outsidewordidx = 10630
+🧠 sampleTokenIdx location: /data3/yoorheekim/NLP_Study/Week_2/new_skipgram/utils/treebank.py
+🧠 sampleTokenIdx in negSampling called from: <code object sampleTokenIdx at 0x7f811bb21780, file "/data3/yoorheekim/NLP_Study/Week_2/new_skipgram/utils/treebank.py", line 137>
+📍 indices = [23197 18423 11817 26670 28550 10631 24953 13051 28201 18161]
+📍 max index = 28550
+📍 outsideVectors.shape = (24429, 10)

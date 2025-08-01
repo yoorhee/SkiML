@@ -1,0 +1,3 @@
+==== Gradient check for naiveSoftmaxLossAndGradient ====
+Gradient check passed!. Read the docstring of the `gradcheck_naive` method in utils.gradcheck.py to understand what the gradient check does.
+Gradient check passed!. Read the docstring of the `gradcheck_naive` method in utils.gradcheck.py to understand what the gradient check does.
