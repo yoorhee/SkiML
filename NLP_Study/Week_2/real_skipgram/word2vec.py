@@ -64,6 +64,16 @@ def naiveSoftmaxLossAndGradient(
     ### Please use the provided softmax function (imported earlier in this file)
     ### This numerically stable implementation helps you avoid issues pertaining
     ### to integer overflow. 
+    y_hat = softmax(np.dot(outsideVectors, centerWordVec)) #y_hat.shape = (V, )
+    y = np.zeros(y_hat.shape)
+    y[outsideWordIdx] = 1  # One-hot encoding for the outside word
+
+    loss = -np.log(y_hat[outsideWordIdx])
+
+    gradCenterVec = np.dot(outsideVectors.T, (y_hat - y))
+
+    gradOutsideVecs = np.zeros(outsideVectors.shape)
+    gradOutsideVecs += np.outer((y_hat - y), centerWordVec)
 
     ### END YOUR CODE
 
@@ -110,7 +120,18 @@ def negSamplingLossAndGradient(
     negSampleWordIndices = getNegativeSamples(outsideWordIdx, dataset, K)
     indices = [outsideWordIdx] + negSampleWordIndices
     ### YOUR CODE HERE (~10 Lines)
+    base = np.dot(outsideVectors[indices], centerWordVec)  # shape (K+1, )
 
+    loss = -np.log(sigmoid(base[0])) - np.sum(np.log(sigmoid(-base[1:])))
+
+    y_hat = sigmoid(base)  # shape (K+1, )
+    y_hat[0] = y_hat[0] -1 
+
+    gradCenterVec = np.dot(y_hat, outsideVectors[indices])  # shape (D, )
+
+    gradOutsideVecs = np.zeros(outsideVectors.shape)
+    for i in range(len(indices)):
+        gradOutsideVecs[indices[i]] += y_hat[i] * centerWordVec
 
 
     ### END YOUR CODE
