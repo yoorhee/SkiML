@@ -118,7 +118,7 @@ def negSamplingLossAndGradient(
     # Negative sampling of words is done for you. Do not modify this if you
     # wish to match the autograder and receive points!
     negSampleWordIndices = getNegativeSamples(outsideWordIdx, dataset, K)
-    indices = [outsideWordIdx] + negSampleWordIndices
+    indices = [outsideWordIdx] + list(negSampleWordIndices)
     ### YOUR CODE HERE (~10 Lines)
     base = np.dot(outsideVectors[indices], centerWordVec)  # shape (K+1, )
 

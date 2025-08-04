@@ -39,6 +39,7 @@ wordVectors = np.concatenate(
     ((np.random.rand(nWords, dimVectors) - 0.5) /
        dimVectors, np.zeros((nWords, dimVectors))),
     axis=0)
+print("wordVectors shape:", wordVectors.shape)
 wordVectors = sgd(
     lambda vec: word2vec_sgd_wrapper(skipgram, tokens, vec, dataset, C,
         negSamplingLossAndGradient),

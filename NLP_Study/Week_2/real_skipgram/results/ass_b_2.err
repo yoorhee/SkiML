@@ -1,10 +1,10 @@
-srun: error: master: task 0: Exited with exit code 1
+srun: error: n01: task 0: Exited with exit code 1
 Traceback (most recent call last):
-  File "word2vec.py", line 320, in <module>
+  File "word2vec.py", line 318, in <module>
     test_word2vec()
-  File "word2vec.py", line 303, in test_word2vec
+  File "word2vec.py", line 301, in test_word2vec
     test_skipgram()
-  File "word2vec.py", line 296, in test_skipgram
+  File "word2vec.py", line 294, in test_skipgram
     grad_tests_negsamp(skipgram, dummy_tokens, dummy_vectors, dataset, negSamplingLossAndGradient)
   File "/data3/yoorheekim/NLP_Study/Week_2/real_skipgram/utils/gradcheck.py", line 146, in grad_tests_negsamp
     "Your loss does not match expected loss."
